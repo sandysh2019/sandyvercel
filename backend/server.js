@@ -187,7 +187,21 @@ if (!fs.existsSync(uploadsDir)) {
 // Middleware
 app.use(helmet());
 app.use(compression());
-app.use(cors({ origin: CORS_ORIGIN.split(',').map(origin => origin.trim()), credentials: true }));
+
+// Dynamically allow Vercel origins, localhost, or explicit CORS_ORIGIN
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    const allowedList = CORS_ORIGIN ? CORS_ORIGIN.split(',').map(o => o.trim()) : [];
+    if (allowedList.includes(origin) || origin.endsWith('.vercel.app') || origin.includes('localhost')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(uploadsDir));
