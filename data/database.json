@@ -1,0 +1,31 @@
+{
+  "portfolio": [
+    {
+      "id": "27c957a9-7f13-4260-a432-3eb309b7f962",
+      "title": "Mini Birthday Vlog - Gulab Jamun Special",
+      "description": "A vibrant YouTube thumbnail designed for a birthday celebration vlog, featuring custom typography, photo manipulation, and festive decorative elements like balloons and confetti.",
+      "category": "graphic-design",
+      "images": [
+        "/uploads/1db74d8c-9d7a-48c5-87b7-aac8e077c50c-JOSKILLSMBV.jpg"
+      ],
+      "externalUrl": "",
+      "githubUrl": "",
+      "createdAt": "2026-03-29T20:32:28.615Z",
+      "updatedAt": "2026-03-29T20:33:32.428Z"
+    }
+  ],
+  "messages": [],
+  "admin": {
+    "username": "shwe2007",
+    "password": "$2b$10$50tr1gRCdQ1.w8.HPsogWuGZdq09KbS3YQF/kZooSLuY98LHfmo9y",
+    "createdAt": "2026-03-29T17:46:14.159Z",
+    "updatedAt": "2026-03-29T18:03:13.750Z"
+  },
+  "settings": {
+    "siteTitle": "Santhosh Portfolio",
+    "siteDescription": "Graphic Designer & Full-Stack AI Developer",
+    "contactEmail": "santhoshwe2007@gmail.com",
+    "phone": "9994723048",
+    "location": "Chennai, India"
+  }
+}
