@@ -22,6 +22,10 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 // __filename and __dirname already defined above for dotenv path resolution
 
 const app = express();
+
+// Trust reverse proxy for true client IP (Render, Vercel edge)
+app.set('trust proxy', 1);
+
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';

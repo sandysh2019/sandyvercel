@@ -25,8 +25,8 @@ const AdminLogin = () => {
       await login(username, password);
       toast.success('Login successful!');
       navigate('/admin/dashboard');
-    } catch (error) {
-      toast.error('Invalid credentials. Please try again.');
+    } catch (error: any) {
+      toast.error(error.message || 'Invalid credentials. Please try again.');
     } finally {
       setIsLoading(false);
     }
