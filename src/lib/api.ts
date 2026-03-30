@@ -1,6 +1,12 @@
 import type { PortfolioItem, Message, SiteSettings, ContactFormData, LoginCredentials } from '@/types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+let API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
+// Fool-proof the URL just in case the user forgot to add /api to the end in their dashboard
+if (API_BASE_URL && !API_BASE_URL.endsWith('/api') && !API_BASE_URL.includes('/api/')) {
+  API_BASE_URL = `${API_BASE_URL.replace(/\/$/, '')}/api`;
+}
+
 export const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, '');
 
 export const getAssetUrl = (assetPath: string) => {
@@ -14,7 +20,8 @@ async function fetchAPI<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  // Ensure endpoint starts with a slash
+  const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
   const isFormDataBody = options.body instanceof FormData;
   
   const config: RequestInit = {
@@ -39,8 +46,15 @@ async function fetchAPI<T>(
   const response = await fetch(url, config);
   
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(error.error || `HTTP error! status: ${response.status}`);
+    let errorMessage = `HTTP error! status: ${response.status}`;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch (e) {
+      if (response.status === 404) errorMessage = "API endpoint not found (404). Check backend URL.";
+      else if (response.status >= 500) errorMessage = "Server error (5xx). Backend might be down.";
+    }
+    throw new Error(errorMessage);
   }
   
   return response.json();
